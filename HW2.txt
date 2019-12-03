@@ -1,0 +1,310 @@
+package com.geekspring.lesson2HW.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class IndexController {
+
+    @GetMapping()
+    public String getIndex(){
+        return "index";
+    }
+
+}
+package com.geekspring.lesson2HW.controller;
+
+import com.geekspring.lesson2HW.entity.Product;
+import com.geekspring.lesson2HW.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Controller
+@RequestMapping("/product")
+public class ProductController {
+
+    private ProductService productService;
+
+    @Autowired
+    public void setProductService(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @GetMapping("/all")
+    public String getProducts(Model model){
+        List<Product> list = productService.findAll();
+        model.addAttribute("list",list);
+        return "products";
+    }
+
+    @GetMapping("/add")
+    public String addProduct(Model model){
+        model.addAttribute("product", new Product());
+        return "add";
+    }
+
+    @PostMapping("/add")
+    public String addProduct(@ModelAttribute(name = "product") Product product){
+        if  (productService.save(product)==null) return "errorForAdd";
+        return "redirect:/";
+    }
+
+    @GetMapping("/findById")
+    public String getById(Model model, @RequestParam(name = "id", required = false) Long id){
+        if (id==null) return "errorForFind";
+        Product product = productService.findById(id);
+        if (product == null) return "errorForFind";
+        model.addAttribute("product", product);
+        return "product";
+    }
+
+    @GetMapping("/edit")
+    public String edit(Model model, @RequestParam(name = "id", required = false) Long id){
+        Product product = productService.findById(id);
+        model.addAttribute("product",product);
+        return "edit";
+    }
+
+    @PostMapping("/edit")
+    public String edit(@ModelAttribute(name = "product") Product product){
+        productService.update(product);
+        return "redirect:/product/findById?id="+product.getId();
+    }
+
+}
+package com.geekspring.lesson2HW.entity;
+
+import lombok.Data;
+import lombok.experimental.Accessors;
+
+import javax.persistence.*;
+
+@Entity (name = "product")
+@Data
+@Accessors (chain = true)
+public class Product {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @Column(name = "title", unique = true)
+    private String title;
+
+    @Column(name = "cost")
+    private int cost;
+
+}
+package com.geekspring.lesson2HW.repository;
+
+import com.geekspring.lesson2HW.entity.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+
+
+@Repository
+public interface ProductRepository  extends JpaRepository <Product, Long> {
+        Product findByTitle(String title);
+}
+
+package com.geekspring.lesson2HW.service;
+
+import com.geekspring.lesson2HW.entity.Product;
+import com.geekspring.lesson2HW.repository.ProductRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ProductService {
+
+    private ProductRepository productRepository;
+
+    @Autowired
+    public void setProductRepository(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    public List<Product> findAll(){
+        return productRepository.findAll();
+    }
+
+    public Product save(Product product){
+        Product temp = productRepository.findByTitle(product.getTitle());
+        if (temp!=null) return null;
+        return productRepository.save(product);
+    }
+
+    public Product findById(Long id){
+        return productRepository.findById(id).orElse(null);
+    }
+
+    public Product update(Product product){
+        return productRepository.save(product);
+    }
+
+
+}
+spring.datasource.url=jdbc:h2:file:./resources/testdb;DB_CLOSE_ON_EXIT=FALSE;DB_CLOSE_DELAY=-1;
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=admin
+spring.datasource.password=admin
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+spring.jpa.hibernate.ddl-auto=update
+
+server.servlet.context-path=/app
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Market</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Каталог товаров</h1>
+        <table class="table table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Название товара</th>
+                <th>Цена</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${product.getId()}"/>
+                <td th:text="${product.getTitle()}"/>
+                <td th:text="${product.getCost()}"/>
+                <td>
+                    <a class="btn btn-primary" th:href="@{'/product/edit?id=' + ${product.id}}">Update</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <h2><a th:href="@{'/'}">На главную</a></h2>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Market</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Каталог товаров</h1>
+        <table class="table table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Название товара</th>
+                <th>Цена</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${list}">
+                <td th:text="${product.getId()}"/>
+                <td th:text="${product.getTitle()}"/>
+                <td th:text="${product.getCost()}"/>
+            </tr>
+            </tbody>
+        </table>
+        <h2><a th:href="@{'/'}">На главную</a></h2>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Market</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Каталог товаров</h1>
+        <form th:action="@{/product/edit}" th:object="${product}" th:method="Post">
+            <input th:field="*{id}" type="hidden" class="form-control">
+            <div class="form-row">
+                <div class="col form-group">
+                    <label>Наименование</label>
+                    <input th:field="*{title}" type="text" class="form-control" placeholder="">
+                </div>
+                <div class="col form-group">
+                    <label>Цена</label>
+                    <input th:field="*{cost}" type="number" class="form-control" placeholder="">
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+            </div>
+        </form>
+        <h2><a th:href="@{'/'}">На главную</a></h2>
+    </div>
+</body>
+</html>
+
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Market</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Добавить товар</h1>
+        <form th:action="@{/product/add}" th:object="${product}" method="POST">
+            <div class="form-row">
+                <div class="col form-group">
+                    <label>Наименование</label>
+                    <input th:field="*{title}" type="text" class="form-control" placeholder="">
+                </div>
+                <div class="col form-group">
+                    <label>Цена</label>
+                    <input th:field="*{cost}" type="number" class="form-control" placeholder="">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-block">Добавить</button>
+            </div>
+        </form>
+        <h2><a th:href="@{'/'}">На главную</a></h2>
+    </div>
+</body>
+</html>

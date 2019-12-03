@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Market</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2><a th:href="@{'/'}">Главная</a></h2>
+        <h2><a th:href="@{'/product/all'}">Все продукты</a></h2>
+        <h2><a th:href="@{'/product/add'}">Добавить продукт</a></h2>
+        <form th:action="@{/product/findById}"  method="Get">
+            <h2> ID для поиска Товара</h2>
+            <div class="form-row">
+                <div class="col form-group">
+                    <input th:name="id" type="text" class="form-control" placeholder="">
+                </div>
+                <div class="col col-lg-2 form-group">
+                    <button type="submit" class="btn btn-primary btn-block">Поиск</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</body>
+</html>
