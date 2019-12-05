@@ -12,24 +12,28 @@
 
 <body>
     <div class="container">
-        <h1>Каталог товаров</h1>
+        <h1>Товар: <span th:text="${product.getTitle()}"></span></h1>
+
+        <div class="form-group" style="margin-left: 50px">
+            <h3><label th:text="'Id: ' + ${product.getId()}"></label></h3>
+            <h3><label th:text="'Название: ' + ${product.getTitle()}"></label></h3>
+            <h3><label th:text="'Цена: ' + ${product.getCost()}"></label></h3>
+        </div>
+
         <table class="table table-hover">
-            <thead class="thead-dark">
+            <h3><label style="margin-left: 20px" for="thead-dark">Список полкупателей:</label></h3>
+            <thead id="thead-dark" class="thead-dark">
             <tr>
                 <th>ID</th>
-                <th>Название товара</th>
-                <th>Цена</th>
+                <th>Покупатель</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td th:text="${product.getId()}"/>
-                <td th:text="${product.getTitle()}"/>
-                <td th:text="${product.getCost()}"/>
-                <td>
-                    <a class="btn btn-primary" th:href="@{'/product/edit?id=' + ${product.id}}">Update</a>
-                </td>
+            <tr th:each="user : ${product.getUsers()}">
+                <td th:text="${user.id}"/>
+                <td th:text="${user.getTitle()}"/>
+                <td><a class="btn btn-primary" th:href="@{'/product/edit?id=' + ${product.id}}">Update</a></td>
             </tr>
             </tbody>
         </table>
