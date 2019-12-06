@@ -2,19 +2,28 @@ package com.geekspring.HW.controller;
 
 import com.geekspring.HW.entity.Product;
 import com.geekspring.HW.entity.User;
+import com.geekspring.HW.service.ProductFilterAndPageService;
 import com.geekspring.HW.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/product")
 public class ProductController {
-
+    private ProductFilterAndPageService productFilterAndPageService;
     private ProductService productService;
+
+    @Autowired
+    public void setProductFilterAndPageService(ProductFilterAndPageService productFilterAndPageService) {
+        this.productFilterAndPageService = productFilterAndPageService;
+    }
 
     @Autowired
     public void setProductService(ProductService productService) {
@@ -22,9 +31,16 @@ public class ProductController {
     }
 
     @GetMapping("/all")
-    public String getProducts(Model model){
-        List<Product> list = productService.findAll();
-        model.addAttribute("list",list);
+    public String getProducts(Model model,
+            @RequestParam(value = "min") Optional<Double> min,
+            @RequestParam(value = "max") Optional<Double> max,
+            @RequestParam(value = "page") Optional<Integer> page,
+            @RequestParam(value = "size") Optional<Integer> size){
+        Specification<Product> specification = productFilterAndPageService.getSpecification(min,max);
+        PageRequest pageRequest = productFilterAndPageService.getPageRequest(page,size);
+        Page<Product> products = productService.findAllByPagingAndFiltering(specification,pageRequest);
+        model.addAttribute("products",products);
+        model.addAttribute("filter",productFilterAndPageService.getFilterForPage());
         return "products";
     }
 
@@ -60,4 +76,5 @@ public class ProductController {
         productService.update(product);
         return "redirect:/product/findById?id="+product.getId();
     }
+
 }

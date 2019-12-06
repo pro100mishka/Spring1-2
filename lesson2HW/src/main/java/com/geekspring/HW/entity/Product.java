@@ -19,7 +19,7 @@ public class Product {
     private String title;
 
     @Column(name = "cost")
-    private int cost;
+    private Double cost;
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
