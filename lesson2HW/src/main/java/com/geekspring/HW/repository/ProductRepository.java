@@ -1,6 +1,6 @@
-package com.geekspring.lesson2HW.repository;
+package com.geekspring.HW.repository;
 
-import com.geekspring.lesson2HW.entity.Product;
+import com.geekspring.HW.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

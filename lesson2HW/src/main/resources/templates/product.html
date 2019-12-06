@@ -26,17 +26,16 @@
             <tr>
                 <th>ID</th>
                 <th>Покупатель</th>
-                <th></th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="user : ${product.getUsers()}">
                 <td th:text="${user.id}"/>
                 <td th:text="${user.getTitle()}"/>
-                <td><a class="btn btn-primary" th:href="@{'/product/edit?id=' + ${product.id}}">Update</a></td>
             </tr>
             </tbody>
         </table>
+        <a class="btn btn-primary" th:href="@{'/product/edit?id=' + ${product.id}}">Изменить данные о товаре</a>
         <h2><a th:href="@{'/'}">На главную</a></h2>
     </div>
 </body>

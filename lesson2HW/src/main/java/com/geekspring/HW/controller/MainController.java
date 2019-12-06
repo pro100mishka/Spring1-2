@@ -1,4 +1,4 @@
-package com.geekspring.lesson2HW.controller;
+package com.geekspring.HW.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

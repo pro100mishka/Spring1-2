@@ -1,4 +1,4 @@
-package com.geekspring.lesson2HW;
+package com.geekspring.HW;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

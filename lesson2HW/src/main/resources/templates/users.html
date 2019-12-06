@@ -12,8 +12,21 @@
 
 <body>
     <div class="container">
-        <h1>Ошибка</h1>
-        <h2>Объект с таким ID не найден</h2>
+        <h1>Каталог покупателей</h1>
+        <table class="table table-hover">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Покупатель</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${list}">
+                <td th:text="${user.getId()}"/>
+                <td th:text="${user.getTitle()}"/>
+            </tr>
+            </tbody>
+        </table>
         <h2><a th:href="@{'/'}">На главную</a></h2>
     </div>
 </body>

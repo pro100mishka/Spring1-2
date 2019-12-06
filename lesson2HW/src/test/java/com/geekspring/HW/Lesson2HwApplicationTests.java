@@ -1,4 +1,4 @@
-package com.geekspring.lesson2HW;
+package com.geekspring.HW;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

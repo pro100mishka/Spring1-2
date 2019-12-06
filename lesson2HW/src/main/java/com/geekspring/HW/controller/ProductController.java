@@ -1,7 +1,8 @@
-package com.geekspring.lesson2HW.controller;
+package com.geekspring.HW.controller;
 
-import com.geekspring.lesson2HW.entity.Product;
-import com.geekspring.lesson2HW.service.ProductService;
+import com.geekspring.HW.entity.Product;
+import com.geekspring.HW.entity.User;
+import com.geekspring.HW.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,7 +31,7 @@ public class ProductController {
     @GetMapping("/add")
     public String addProduct(Model model){
         model.addAttribute("product", new Product());
-        return "add";
+        return "addProduct";
     }
 
     @PostMapping("/add")
@@ -41,7 +42,6 @@ public class ProductController {
 
     @GetMapping("/findById")
     public String getById(Model model, @RequestParam(name = "id", required = false) Long id){
-        if (id==null) return "errorForFind";
         Product product = productService.findById(id);
         if (product == null) return "errorForFind";
         model.addAttribute("product", product);
@@ -52,7 +52,7 @@ public class ProductController {
     public String edit(Model model, @RequestParam(name = "id", required = false) Long id){
         Product product = productService.findById(id);
         model.addAttribute("product",product);
-        return "edit";
+        return "editProduct";
     }
 
     @PostMapping("/edit")
@@ -60,5 +60,4 @@ public class ProductController {
         productService.update(product);
         return "redirect:/product/findById?id="+product.getId();
     }
-
 }

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Market</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Товар: <span th:text="${user.getTitle()}"></span></h1>
+
+        <div class="form-group" style="margin-left: 50px">
+            <h3><label th:text="'Id: ' + ${user.getId()}"></label></h3>
+            <h3><label th:text="'Название: ' + ${user.getTitle()}"></label></h3>
+        </div>
+        <form th:action="@{/user/addProduct}"  th:method="post">
+            <h2> Добавить продукт по ID</h2>
+            <input th:name="userId" type="hidden" th:value="*{user.getId()}" class="form-control" placeholder="">
+            <div class="form-row">
+                <div class="col form-group">
+                    <input th:name="productId" type="text" class="form-control" placeholder="">
+                </div>
+                <div class="col col-lg-2 form-group">
+                    <button type="submit" class="btn btn-primary btn-block">Добавить</button>
+                </div>
+            </div>
+        </form>
+        <table class="table table-hover">
+            <h3><label style="margin-left: 20px" for="thead-dark">Список купленных товаров:</label></h3>
+            <thead id="thead-dark" class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Цена</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${user.getProductList()}">
+                <td th:text="${product.getId()}"/>
+                <td th:text="${product.getTitle()}"/>
+                <td th:text="${product.getCost()}"/>
+                <td><a class="btn btn-primary" th:href="@{'/user/deleteProduct?productId=' + ${product.id}+'&userId='+${user.id}}">Удалить</a></td>
+            </tr>
+            </tbody>
+        </table>
+        <h2><a th:href="@{'/'}">На главную</a></h2>
+    </div>
+</body>
+</html>

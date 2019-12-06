@@ -1,7 +1,7 @@
-package com.geekspring.lesson2HW.service;
+package com.geekspring.HW.service;
 
-import com.geekspring.lesson2HW.entity.Product;
-import com.geekspring.lesson2HW.repository.ProductRepository;
+import com.geekspring.HW.entity.Product;
+import com.geekspring.HW.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

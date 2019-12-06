@@ -1,4 +1,4 @@
-package com.geekspring.lesson2HW.entity;
+package com.geekspring.HW.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -18,7 +18,7 @@ public class User {
     @Column(name = "title", unique = true)
     private String title;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_product",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -26,4 +26,11 @@ public class User {
     )
     private List<Product> productList;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                '}';
+    }
 }
