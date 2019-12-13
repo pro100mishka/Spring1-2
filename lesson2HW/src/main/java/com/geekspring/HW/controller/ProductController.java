@@ -1,7 +1,8 @@
 package com.geekspring.HW.controller;
 
+import com.geekspring.HW.common.CartItem;
 import com.geekspring.HW.entity.Product;
-import com.geekspring.HW.entity.User;
+import com.geekspring.HW.service.CartService;
 import com.geekspring.HW.service.ProductFilterAndPageService;
 import com.geekspring.HW.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,5 +77,4 @@ public class ProductController {
         productService.update(product);
         return "redirect:/product/findById?id="+product.getId();
     }
-
 }

@@ -41,6 +41,7 @@ public class ProductFilterAndPageService {
     public PageRequest getPageRequest(Optional<Integer> page, Optional<Integer> size){
         int currentPage = page.orElse(1);
         int currentSize = size.orElse(5);
+        filterForPage.setPage(currentPage).setSize(currentSize);
         return PageRequest.of(currentPage-1, currentSize, Sort.by(Sort.Direction.DESC,"cost"));
     }
 }
