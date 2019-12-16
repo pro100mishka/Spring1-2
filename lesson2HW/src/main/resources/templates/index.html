@@ -14,22 +14,10 @@
 
     <div class="container">
         <h2><a th:href="@{'/product/all'}">Все продукты</a></h2>
-        <h2><a th:href="@{'/user/all'}">Все покупатели</a></h2>
         <h2><a th:href="@{'/product/add'}">Добавить продукт</a></h2>
-        <h2><a th:href="@{'/user/add'}">Добавить покупателя</a></h2>
+        <h2><a th:href="@{'/cart/'}">Корзина</a></h2>
         <form th:action="@{/product/findById}"  method="Get">
             <h2> ID для поиска Товара</h2>
-            <div class="form-row">
-                <div class="col form-group">
-                    <input th:name="id" type="text" class="form-control" placeholder="">
-                </div>
-                <div class="col col-lg-2 form-group">
-                    <button type="submit" class="btn btn-primary btn-block">Поиск</button>
-                </div>
-            </div>
-        </form>
-        <form th:action="@{/user/findById}"  method="Get">
-            <h2> ID для поиска Покупателя</h2>
             <div class="form-row">
                 <div class="col form-group">
                     <input th:name="id" type="text" class="form-control" placeholder="">

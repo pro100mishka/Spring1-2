@@ -19,22 +19,6 @@
             <h3><label th:text="'Название: ' + ${product.getTitle()}"></label></h3>
             <h3><label th:text="'Цена: ' + ${product.getCost()}"></label></h3>
         </div>
-
-        <table class="table table-hover">
-            <h3><label style="margin-left: 20px" for="thead-dark">Список полкупателей:</label></h3>
-            <thead id="thead-dark" class="thead-dark">
-            <tr>
-                <th>ID</th>
-                <th>Покупатель</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="user : ${product.getUsers()}">
-                <td th:text="${user.id}"/>
-                <td th:text="${user.getTitle()}"/>
-            </tr>
-            </tbody>
-        </table>
         <a class="btn btn-primary" th:href="@{'/product/edit?id=' + ${product.id}}">Изменить данные о товаре</a>
         <h2><a th:href="@{'/'}">На главную</a></h2>
     </div>

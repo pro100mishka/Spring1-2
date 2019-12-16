@@ -9,21 +9,24 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
-
 <body>
     <div class="container">
-        <h1>Каталог покупателей</h1>
+        <h1>Каталог товаров</h1>
         <table class="table table-hover">
             <thead class="thead-dark">
             <tr>
-                <th>ID</th>
-                <th>Покупатель</th>
+                <th>Название товара</th>
+                <th>Цена</th>
+                <th>Кол-во</th>
+                <th>Общая стоимость</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${list}">
-                <td th:text="${user.getId()}"/>
-                <td th:text="${user.getTitle()}"/>
+            <tr th:each="cartItem : ${list}">
+                <td th:text="${cartItem.getProduct().getTitle()}"></td>
+                <td th:text="${cartItem.getProduct().getCost()}"></td>
+                <td th:text="${cartItem.getCount()}"></td>
+                <td th:text="${cartItem.getCount()*cartItem.getProduct().getCost()}"></td>
             </tr>
             </tbody>
         </table>
