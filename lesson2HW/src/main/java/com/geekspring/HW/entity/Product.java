@@ -1,22 +1,31 @@
 package com.geekspring.HW.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 
-@Entity (name = "product")
+@Entity
+@Table(name = "product")
 @Data
-@Accessors (chain = true)
+@Accessors(chain = true)
+@NoArgsConstructor
 public class Product {
 
-    @Id
+    @Id()
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
-    @Column(name = "title", unique = true)
+    @NonNull
+    @Column(name = "title")
     private String title;
 
+    @NonNull
     @Column(name = "cost")
-    private Double cost;
+    private double cost;
+
 }
+

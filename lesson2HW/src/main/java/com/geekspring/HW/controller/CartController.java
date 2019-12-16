@@ -40,7 +40,7 @@ public class CartController {
                             @RequestParam(value = "page") Optional<Integer> page,
                             @RequestParam(value = "size") Optional<Integer> size
     ){
-        Product product = productService.findById(id);
+        Product product = productService.findById(id).orElse(null);
         if (product!=null){
             System.out.println(cartService.addToCart(product));
         }

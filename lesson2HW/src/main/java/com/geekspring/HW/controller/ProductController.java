@@ -59,7 +59,7 @@ public class ProductController {
 
     @GetMapping("/findById")
     public String getById(Model model, @RequestParam(name = "id", required = false) Long id){
-        Product product = productService.findById(id);
+        Product product = productService.findById(id).orElse(null);
         if (product == null) return "errorForFind";
         model.addAttribute("product", product);
         return "product";
@@ -67,7 +67,7 @@ public class ProductController {
 
     @GetMapping("/edit")
     public String edit(Model model, @RequestParam(name = "id", required = false) Long id){
-        Product product = productService.findById(id);
+        Product product = productService.findById(id).orElse(null);
         model.addAttribute("product",product);
         return "editProduct";
     }
@@ -77,4 +77,5 @@ public class ProductController {
         productService.update(product);
         return "redirect:/product/findById?id="+product.getId();
     }
+
 }

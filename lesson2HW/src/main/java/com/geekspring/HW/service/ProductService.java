@@ -8,6 +8,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ProductService {
 
@@ -24,8 +27,8 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Product findById(Long id){
-        return productRepository.findById(id).orElse(null);
+    public Optional<Product> findById(Long id){
+        return productRepository.findById(id);
     }
 
     public Product update(Product product){
@@ -36,4 +39,11 @@ public class ProductService {
         return productRepository.findAll(specification,pageable);
     }
 
+    public List<Product> findAllByFiltering(Specification<Product> specification){
+        return productRepository.findAll(specification);
+    }
+
+    public void delete(Long id){
+        productRepository.findById(id).ifPresent(product -> productRepository.delete(product));
+    }
 }
