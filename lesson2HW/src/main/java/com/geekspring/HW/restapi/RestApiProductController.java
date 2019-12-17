@@ -34,8 +34,9 @@ public class RestApiProductController {
     @GetMapping(value = "/")
     public List<Product> getAll(HttpServletRequest request,
                                 @RequestParam(value = "min") Optional<Double> min,
-                                @RequestParam(value = "max") Optional<Double> max){
-        return service.findAllByFiltering(specificationService.getSpecification(min,max));
+                                @RequestParam(value = "max") Optional<Double> max,
+                                @RequestParam(value = "category") Optional<Integer> category){
+        return service.findAllByFiltering(specificationService.getSpecification(min,max,category));
     }
 
     @GetMapping(value = "/{id}")

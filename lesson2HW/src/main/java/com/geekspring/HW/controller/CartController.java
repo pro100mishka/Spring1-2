@@ -5,6 +5,7 @@ import com.geekspring.HW.common.CartItem;
 import com.geekspring.HW.entity.Product;
 import com.geekspring.HW.service.CartService;
 import com.geekspring.HW.service.ProductService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +16,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Controller
+@Log4j2
 @RequestMapping("/cart")
 public class CartController {
     private ProductService productService;
@@ -40,10 +42,7 @@ public class CartController {
                             @RequestParam(value = "page") Optional<Integer> page,
                             @RequestParam(value = "size") Optional<Integer> size
     ){
-        Product product = productService.findById(id).orElse(null);
-        if (product!=null){
-            System.out.println(cartService.addToCart(product));
-        }
+        productService.findById(id).ifPresent(product -> cartService.addToCart(product));
         return "redirect:/product/all";
     }
 

@@ -1,8 +1,10 @@
 package com.geekspring.HW.controller;
 
 import com.geekspring.HW.common.CartItem;
+import com.geekspring.HW.entity.Category;
 import com.geekspring.HW.entity.Product;
 import com.geekspring.HW.service.CartService;
+import com.geekspring.HW.service.CategoryService;
 import com.geekspring.HW.service.ProductFilterAndPageService;
 import com.geekspring.HW.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,30 +20,24 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/product")
 public class ProductController {
-    private ProductFilterAndPageService productFilterAndPageService;
     private ProductService productService;
 
     @Autowired
-    public void setProductFilterAndPageService(ProductFilterAndPageService productFilterAndPageService) {
-        this.productFilterAndPageService = productFilterAndPageService;
-    }
-
-    @Autowired
-    public void setProductService(ProductService productService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping("/all")
     public String getProducts(Model model,
-            @RequestParam(value = "min") Optional<Double> min,
-            @RequestParam(value = "max") Optional<Double> max,
-            @RequestParam(value = "page") Optional<Integer> page,
-            @RequestParam(value = "size") Optional<Integer> size){
-        Specification<Product> specification = productFilterAndPageService.getSpecification(min,max);
-        PageRequest pageRequest = productFilterAndPageService.getPageRequest(page,size);
-        Page<Product> products = productService.findAllByPagingAndFiltering(specification,pageRequest);
+                              @RequestParam(value = "min") Optional<Double> min,
+                              @RequestParam(value = "max") Optional<Double> max,
+                              @RequestParam(value = "page") Optional<Integer> page,
+                              @RequestParam(value = "size") Optional<Integer> size,
+                              @RequestParam(value = "category") Optional<Integer> category){
+        Page<Product> products = productService.findAllByPagingAndFiltering(min, max, page, size, category);
         model.addAttribute("products",products);
-        model.addAttribute("filter",productFilterAndPageService.getFilterForPage());
+        model.addAttribute("filter", productService.getFilter());
+        model.addAttribute("categories", productService.getAllCategory());
         return "products";
     }
 
