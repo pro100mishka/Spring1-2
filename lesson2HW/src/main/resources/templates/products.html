@@ -11,6 +11,7 @@
 </head>
 <body>
     <div class="container">
+        <div th:replace="~{navigation :: navigation(Profile)}"></div>
         <h1>Каталог товаров</h1>
         <div th:if="${!products.isEmpty()}">
             <table class="table table-hover">
@@ -29,7 +30,7 @@
                     <td th:text="${product.getTitle()}"></td>
                     <td th:text="${product.getCost()}"></td>
                     <td th:text="${product.getCategory().getTitle()}"></td>
-                    <td><a class="btn" th:href="@{'/cart/add?id='+${product.getId()}+${filter.toString()}}" th:text="Add">%</a></td>
+                    <td><a class="btn" th:href="@{'/cart/add?id='+${product.getId()}}" th:text="Add">%</a></td>
                 </tr>
                 </tbody>
             </table>

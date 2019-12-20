@@ -12,8 +12,8 @@
 
 <body>
     <div class="container">
+        <div th:replace="~{navigation :: navigation(Profile)}"></div>
         <h1>Товар: <span th:text="${product.getTitle()}"></span></h1>
-
         <div class="form-group" style="margin-left: 50px">
             <h3><label th:text="'Id: ' + ${product.getId()}"></label></h3>
             <h3><label th:text="'Название: ' + ${product.getTitle()}"></label></h3>

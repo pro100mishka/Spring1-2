@@ -1,4 +1,4 @@
-package com.geekspring.HW.common;
+package com.geekspring.HW.utils;
 
 import com.geekspring.HW.entity.Product;
 import lombok.Data;

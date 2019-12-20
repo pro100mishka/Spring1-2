@@ -1,16 +1,9 @@
 package com.geekspring.HW.controller;
 
-import com.geekspring.HW.common.CartItem;
-import com.geekspring.HW.entity.Category;
 import com.geekspring.HW.entity.Product;
-import com.geekspring.HW.service.CartService;
-import com.geekspring.HW.service.CategoryService;
-import com.geekspring.HW.service.ProductFilterAndPageService;
 import com.geekspring.HW.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
