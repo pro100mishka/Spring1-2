@@ -23,18 +23,17 @@ public class ProductFilterAndPageService {
         this.filterForPage = filterForPage;
     }
 
-    public Specification<Product> getSpecification(Optional<Double> min, Optional<Double> max){
+    public Specification<Product> getSpecification(Optional<Double> min, Optional<Double> max,Optional<Integer> category){
         Specification<Product> temp = Specification.where(null);
         Double minLocal = min.orElse(null);
         Double maxLocal = max.orElse(null);
-        if (minLocal!=null & temp!=null){
-            temp = temp.and(ProductSpecifications.costGreaterThanOrEq(minLocal));
-            filterForPage.setMin(minLocal);
-        } else filterForPage.setMin(null);
-        if (maxLocal!=null & temp!=null){
-            filterForPage.setMax(maxLocal);
-            temp = temp.and(ProductSpecifications.costLesserThanOrEq(maxLocal));
-        } else filterForPage.setMax(null);
+        Integer categoryLocal = category.orElse(null);
+        if (minLocal!=null & temp!=null) temp = temp.and(ProductSpecifications.costGreaterThanOrEq(minLocal));
+        filterForPage.setMin(minLocal);
+        if (categoryLocal!=null & temp!=null) temp= temp.and(ProductSpecifications.category(categoryLocal));
+        filterForPage.setCategory(categoryLocal);
+        if (maxLocal!=null & temp!=null) temp = temp.and(ProductSpecifications.costLesserThanOrEq(maxLocal));
+        filterForPage.setMax(maxLocal);
         return temp;
     }
 

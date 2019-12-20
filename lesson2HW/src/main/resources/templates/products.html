@@ -11,39 +11,69 @@
 </head>
 <body>
     <div class="container">
+        <div th:replace="~{navigation :: navigation(Profile)}"></div>
         <h1>Каталог товаров</h1>
-        <table class="table table-hover">
-            <thead class="thead-dark">
-            <tr>
-                <th>ID</th>
-                <th>Название товара</th>
-                <th>Цена</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="product : ${products}">
-                <td th:text="${product.getId()}"></td>
-                <td th:text="${product.getTitle()}"></td>
-                <td th:text="${product.getCost()}"></td>
-                <td><a class="btn" th:href="@{'/cart/add?id='+${product.getId()}+${filter.toString()}}" th:text="Add">%</a></td>
-            </tr>
-            </tbody>
-        </table>
-        <h2>Фильтр</h2>
-        <form th:action="@{/product/all}"  method="Get">
-            <div class="form-row">
-                <div class="col form-group">
-                    <input id="min" th:name="min" th:value="${filter.getMin()}" type="text" class="form-control" placeholder="Минимальная цена">
+        <div th:if="${!products.isEmpty()}">
+            <table class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Название товара</th>
+                    <th>Цена</th>
+                    <th>Категория</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.getId()}"></td>
+                    <td th:text="${product.getTitle()}"></td>
+                    <td th:text="${product.getCost()}"></td>
+                    <td th:text="${product.getCategory().getTitle()}"></td>
+                    <td><a class="btn" th:href="@{'/cart/add?id='+${product.getId()}}" th:text="Add">%</a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${products.isEmpty()}">
+            <h2>В данный момент товары с данными характеристиками отсуствуют!</h2>
+        </div>
+        <div>
+            <h2>Фильтр</h2>
+            <form th:action="@{/product/all}"  method="Get">
+                <div style="margin: 20px">
+                    <label for="category">Выбор Категории</label>
+                    <select id="category" class="form-control" name="category">
+                        <option th:text="'Не выбрана'" th:value="null"></option>
+                        <option th:each="category : ${categories}"
+                                th:value="${category.id}" th:text="${category.title}"
+                                th:selected="${filter.category != null && category.id.toString() == filter.category.toString()}"></option>
+                    </select>
                 </div>
-                <div class="col form-group">
-                    <input id="max" th:name="max" th:value="${filter.getMax()}" type="text" class="form-control" placeholder="Максимальная цена">
+                <div  style="margin: 20px">
+                    <label for="price">Диапазон цен</label>
+                    <div id="price" class="form-row">
+                        <div class="col form-group">
+                            <input id="min" th:name="min" th:value="${filter.getMin()}" type="text" class="form-control" placeholder="Минимальная цена">
+                        </div>
+                        <div class="col form-group">
+                            <input id="max" th:name="max" th:value="${filter.getMax()}" type="text" class="form-control" placeholder="Максимальная цена">
+                        </div>
+
+                    </div>
                 </div>
-                <div class="col col-lg-2 form-group">
-                    <button type="submit" class="btn btn-primary btn-block">Поиск</button>
+                <div  style="margin: 20px">
+                    <div class="form-row">
+                        <div class="col col-lg-2 form-group">
+                            <a class="btn btn-danger" th:href="@{'/product/all'}">Сброс фильтра</a>
+                        </div>
+                        <div class="col col-lg-2 form-group">
+                            <button type="submit" class="btn btn-primary btn-block">Поиск</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
         <h2><a th:href="@{'/'}">На главную</a></h2>
     </div>
 
