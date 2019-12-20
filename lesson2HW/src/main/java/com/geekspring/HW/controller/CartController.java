@@ -1,7 +1,7 @@
 package com.geekspring.HW.controller;
 
 import com.geekspring.HW.utils.Cart;
-import com.geekspring.HW.utils.CartItem;
+import com.geekspring.HW.entity.OrderItem;
 import com.geekspring.HW.service.CartService;
 import com.geekspring.HW.service.ProductService;
 import lombok.extern.log4j.Log4j2;
@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @Controller
@@ -43,11 +42,11 @@ public class CartController {
         response.sendRedirect(request.getHeader("referer"));
     }
 
-    @GetMapping("")
+    @GetMapping("/")
     public String getCart(Model model){
         Cart cart = cartService.getCart();
-        List<CartItem> cartItems = new ArrayList<>(cart.getCartItems().values());
-        model.addAttribute("list",cartItems);
+        List<OrderItem> orderItems = new ArrayList<>(cart.getOrderItemMap().values());
+        model.addAttribute("list", orderItems);
         return "cart";
     }
 

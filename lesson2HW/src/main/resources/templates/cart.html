@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -12,26 +12,31 @@
 <body>
     <div class="container">
         <div th:replace="~{navigation :: navigation(Cart)}"></div>
-        <h1>Каталог товаров</h1>
-        <table class="table table-hover">
-            <thead class="thead-dark">
-            <tr>
-                <th>Название товара</th>
-                <th>Цена</th>
-                <th>Кол-во</th>
-                <th>Общая стоимость</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="cartItem : ${list}">
-                <td th:text="${cartItem.getProduct().getTitle()}"></td>
-                <td th:text="${cartItem.getProduct().getCost()}"></td>
-                <td th:text="${cartItem.getCount()}"></td>
-                <td th:text="${cartItem.getCount()*cartItem.getProduct().getCost()}"></td>
-            </tr>
-            </tbody>
-        </table>
-        <h2><a th:href="@{'/'}">На главную</a></h2>
+        <h1>Корзина</h1>
+        <div th:if="${!list.isEmpty()}" >
+            <table  class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Название товара</th>
+                    <th>Цена</th>
+                    <th>Кол-во</th>
+                    <th>Общая стоимость</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cartItem : ${list}">
+                    <td th:text="${cartItem.getProduct().getTitle()}"></td>
+                    <td th:text="${cartItem.getProduct().getCost()}"></td>
+                    <td th:text="${cartItem.getCount()}"></td>
+                    <td th:text="${cartItem.getCount()*cartItem.getProduct().getCost()}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <hr>
+            <h2><a sec:authorize="isAuthenticated()" th:classappend="${list.isEmpty() ? 'disabled':''}" class="btn btn-warning" th:href="@{'/order/'}">Оформить заказ</a></h2>
+            <h2 sec:authorize="isAnonymous()" >Для оформления заказа авторизуйтесь.</h2>
+        </div>
+        <h3 th:if="${list.isEmpty()}" >Ваша корзина пуста =(</h3>
     </div>
 </body>
 </html>

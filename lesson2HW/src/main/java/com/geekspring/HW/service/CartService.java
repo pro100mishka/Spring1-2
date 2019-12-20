@@ -1,7 +1,7 @@
 package com.geekspring.HW.service;
 
 import com.geekspring.HW.utils.Cart;
-import com.geekspring.HW.utils.CartItem;
+import com.geekspring.HW.entity.OrderItem;
 import com.geekspring.HW.entity.Product;
 import lombok.Data;
 import lombok.extern.log4j.Log4j2;
@@ -23,11 +23,13 @@ public class CartService {
 
     public void addToCart(Product product){
         log.info("Received product to add to cart: " + product);
-        CartItem temp = cart.getCartItems().get(product);
+        OrderItem temp = cart.getOrderItemMap().get(product);
         if (temp == null){
-            temp = new CartItem().setProduct(product).setCount(0);
+            temp = new OrderItem().setProduct(product).setCount(0);
         }
         temp.setCount(temp.getCount()+1);
+        cart.getOrderItemMap().put(temp.getProduct(),temp);
+        log.info(cart.toString());
     }
 
 }

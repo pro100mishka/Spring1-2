@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8"/>
+    <title>Заготовка магазина</title>
+    <link rel="stylesheet" th:href="@{../static/css/stylesheet.css}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Заказ</h1>
+        <div>
+            <h3>Для подтверждения заказа, укажите дополнительную информацию: </h3>
+            <form th:action="@{/order/}"  th:object="${address}" method="POST">
+                <div class="form-row">
+                    <div class="col-md-3 mb-3">
+                        <label for="phone">Укажите телефон</label>
+                        <input id="phone" th:name="phone" th:field="*{phone}" type="text" class="form-control" placeholder="Контактный телефон">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-3 mb-3">
+                        <label for="validationDefault03">Город</label>
+                        <input type="text" th:name="city" th:field="*{city}"  class="form-control" id="validationDefault03" placeholder="Город" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="validationDefault04">Область</label>
+                        <input type="text" th:name="state" th:field="*{state}"  class="form-control" id="validationDefault04" placeholder="Область" required>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="validationDefault05">Индекс</label>
+                        <input type="text" th:name="zip" th:field="*{zip}"  class="form-control" id="validationDefault05" placeholder="Индекс" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <label for="validationDefault01">Улица</label>
+                        <input type="text" th:name="street" th:field="*{street}" class="form-control" id="validationDefault01" placeholder="Улица" required>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="validationDefault02">Номер дома</label>
+                        <input type="text" th:name="home" th:field="*{home}" class="form-control" id="validationDefault02" placeholder="Номер дома" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col col-lg-2 form-group">
+                        <button type="submit" class="btn btn-primary btn-block">Подтвердить заказ</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div>
+            <table  class="table table-hover">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Название товара</th>
+                    <th>Цена</th>
+                    <th>Кол-во</th>
+                    <th>Общая стоимость</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="OrderItems : ${order.getOrderItems()}">
+                    <td th:text="${OrderItems.getProduct().getTitle()}"></td>
+                    <td th:text="${OrderItems.getProduct().getCost()}"></td>
+                    <td th:text="${OrderItems.getCount()}"></td>
+                    <td th:text="${OrderItems.getCount()*OrderItems.getProduct().getCost()}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
