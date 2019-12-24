@@ -12,6 +12,7 @@
 
 <body>
     <div class="container">
+        <div th:replace="~{navigation :: navigation(Profile)}"></div>
         <h1>Добавить товар</h1>
         <form th:action="@{/product/add}" th:object="${product}" method="POST">
             <div class="form-row">

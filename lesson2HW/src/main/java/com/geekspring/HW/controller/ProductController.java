@@ -1,14 +1,9 @@
 package com.geekspring.HW.controller;
 
-import com.geekspring.HW.common.CartItem;
 import com.geekspring.HW.entity.Product;
-import com.geekspring.HW.service.CartService;
-import com.geekspring.HW.service.ProductFilterAndPageService;
 import com.geekspring.HW.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,30 +13,24 @@ import java.util.Optional;
 @Controller
 @RequestMapping("/product")
 public class ProductController {
-    private ProductFilterAndPageService productFilterAndPageService;
     private ProductService productService;
 
     @Autowired
-    public void setProductFilterAndPageService(ProductFilterAndPageService productFilterAndPageService) {
-        this.productFilterAndPageService = productFilterAndPageService;
-    }
-
-    @Autowired
-    public void setProductService(ProductService productService) {
+    public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping("/all")
     public String getProducts(Model model,
-            @RequestParam(value = "min") Optional<Double> min,
-            @RequestParam(value = "max") Optional<Double> max,
-            @RequestParam(value = "page") Optional<Integer> page,
-            @RequestParam(value = "size") Optional<Integer> size){
-        Specification<Product> specification = productFilterAndPageService.getSpecification(min,max);
-        PageRequest pageRequest = productFilterAndPageService.getPageRequest(page,size);
-        Page<Product> products = productService.findAllByPagingAndFiltering(specification,pageRequest);
+                              @RequestParam(value = "min") Optional<Double> min,
+                              @RequestParam(value = "max") Optional<Double> max,
+                              @RequestParam(value = "page") Optional<Integer> page,
+                              @RequestParam(value = "size") Optional<Integer> size,
+                              @RequestParam(value = "category") Optional<Integer> category){
+        Page<Product> products = productService.findAllByPagingAndFiltering(min, max, page, size, category);
         model.addAttribute("products",products);
-        model.addAttribute("filter",productFilterAndPageService.getFilterForPage());
+        model.addAttribute("filter", productService.getFilter());
+        model.addAttribute("categories", productService.getAllCategory());
         return "products";
     }
 
@@ -59,7 +48,7 @@ public class ProductController {
 
     @GetMapping("/findById")
     public String getById(Model model, @RequestParam(name = "id", required = false) Long id){
-        Product product = productService.findById(id);
+        Product product = productService.findById(id).orElse(null);
         if (product == null) return "errorForFind";
         model.addAttribute("product", product);
         return "product";
@@ -67,7 +56,7 @@ public class ProductController {
 
     @GetMapping("/edit")
     public String edit(Model model, @RequestParam(name = "id", required = false) Long id){
-        Product product = productService.findById(id);
+        Product product = productService.findById(id).orElse(null);
         model.addAttribute("product",product);
         return "editProduct";
     }
@@ -77,4 +66,5 @@ public class ProductController {
         productService.update(product);
         return "redirect:/product/findById?id="+product.getId();
     }
+
 }

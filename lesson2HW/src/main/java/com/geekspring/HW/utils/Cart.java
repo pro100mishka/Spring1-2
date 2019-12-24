@@ -1,8 +1,11 @@
-package com.geekspring.HW.common;
+package com.geekspring.HW.utils;
 
 
+import com.geekspring.HW.entity.Order;
+import com.geekspring.HW.entity.OrderItem;
 import com.geekspring.HW.entity.Product;
 import lombok.Data;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
@@ -14,15 +17,17 @@ import java.util.Map;
 
 @Data
 @Component
+@Log4j2
 @Scope(value=WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Cart {
 
-    private Map<Product, CartItem> cartItems;
+    private Map<Product, OrderItem> orderItemMap;
+    private Order prepareOrder;
 
     @PostConstruct
     public void init(){
-        System.out.println("Create Map");
-        cartItems = new HashMap<>();
+        log.info("Create HashMap!");
+        orderItemMap = new HashMap<>();
     }
 
 }

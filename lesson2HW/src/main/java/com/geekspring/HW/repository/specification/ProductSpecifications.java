@@ -15,4 +15,9 @@ public class ProductSpecifications {
         return (Specification<Product>) (root, criteriaQuery, criteriaBuilder) ->
                 criteriaBuilder.lessThanOrEqualTo(root.get("cost"),value);
     }
+
+    public static Specification<Product> category(Integer category){
+        return (Specification<Product>) (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder
+                .equal(root.get("category").get("id"), category);
+    }
 }

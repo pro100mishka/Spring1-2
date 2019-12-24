@@ -11,11 +11,10 @@
 </head>
 
 <body>
-
     <div class="container">
+        <div th:replace="~{navigation :: navigation(Home)}"></div>
         <h2><a th:href="@{'/product/all'}">Все продукты</a></h2>
         <h2><a th:href="@{'/product/add'}">Добавить продукт</a></h2>
-        <h2><a th:href="@{'/cart/'}">Корзина</a></h2>
         <form th:action="@{/product/findById}"  method="Get">
             <h2> ID для поиска Товара</h2>
             <div class="form-row">
