@@ -2,11 +2,13 @@ package com.geekspring.HW.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Entity(name = "order")
+@Entity
+@Table(name = "order_table")
 @Data
 @Accessors(chain = true)
 public class Order {
@@ -20,10 +22,10 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.PERSIST)
     private List<OrderItem> orderItems;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "address_id")
     private Address address;
 

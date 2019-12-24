@@ -64,3 +64,39 @@ VALUES
 (1, 1),
 (1, 2),
 (1, 3);
+
+DROP TABLE IF EXISTS address;
+CREATE TABLE address (
+    id bigserial,
+    phone varchar(255),
+    city varchar(255),
+    state varchar(255),
+    zip varchar(255),
+    street varchar(255),
+    home varchar(255),
+    PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS order_table cascade;
+CREATE TABLE order_table(
+    id bigserial,
+    user_id integer,
+    address_id integer,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT fk_address_id FOREIGN KEY (address_id) REFERENCES address(id)
+);
+
+
+DROP TABLE IF EXISTS order_Item cascade;
+CREATE TABLE order_Item (
+    id bigserial,
+    product_id integer,
+    count integer,
+    price decimal,
+    total_price decimal,
+    order_id integer,
+    PRIMARY KEY (id),
+    CONSTRAINT fk_product_id FOREIGN KEY (product_id) REFERENCES product(id),
+    CONSTRAINT fk_order_id FOREIGN KEY (order_id) REFERENCES order_table(id)
+);

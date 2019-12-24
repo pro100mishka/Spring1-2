@@ -6,7 +6,7 @@ import lombok.experimental.Accessors;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
-@Entity(name = "orderItem")
+@Entity(name = "order_Item")
 @Data
 @Accessors(chain = true)
 public class OrderItem {
@@ -31,4 +31,15 @@ public class OrderItem {
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;
+
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "id=" + id +
+                ", product=" + product +
+                ", count=" + count +
+                ", price=" + price +
+                ", totalPrice=" + totalPrice +
+                '}';
+    }
 }

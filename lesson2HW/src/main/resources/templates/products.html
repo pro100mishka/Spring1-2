@@ -6,10 +6,25 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <title>Market</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script>
+        var stompClient = null;
+
+        function connect() {
+            var socket = new SockJS('/app/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function (frame) {
+                console.log('Connected: ' + frame);
+            });
+        }
+        function addToCart() {
+            stompClient.send("/app/add", {}, JSON.stringify({'id': $("#addToCart").val()}));
+        }
+    </script>
 </head>
-<body>
+<body onload="connect()">
     <div class="container">
         <div th:replace="~{navigation :: navigation(Profile)}"></div>
         <h1>Каталог товаров</h1>
@@ -30,7 +45,10 @@
                     <td th:text="${product.getTitle()}"></td>
                     <td th:text="${product.getCost()}"></td>
                     <td th:text="${product.getCategory().getTitle()}"></td>
-                    <td><a class="btn" th:href="@{'/cart/add?id='+${product.getId()}}" th:text="Add">%</a></td>
+                    <td>
+                        <!--                    <td><a class="btn" th:href="@{'/cart/add?id='+${product.getId()}}" th:text="Add">%</a></td>-->
+                        <button th:value="${product.getId()}" onclick="addToCart()" id="addToCart" class="btn btn-default" type="submit">Add</button>
+                    </td>
                 </tr>
                 </tbody>
             </table>

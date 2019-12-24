@@ -6,6 +6,7 @@ import lombok.NonNull;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -26,7 +27,7 @@ public class Product {
 
     @NonNull
     @Column(name = "cost")
-    private double cost;
+    private BigDecimal cost;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

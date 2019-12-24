@@ -31,6 +31,6 @@ public class Address {
     private String street;
 
     @Column(name = "home")
-    private int home;
+    private String home;
 
 }

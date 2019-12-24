@@ -12,12 +12,17 @@
 
 <body>
 
-<div class="container">
-    <div th:replace="~{navigation :: navigation(Profile)}"></div>
-    <h1>Профиль</h1>
-    <h5 th:text="'Name: ' + ${user.firstName} + ' ' + ${user.lastName}"></h5>
-    <h5 th:text="'Phone: ' + ${user.phone}"></h5>
-</div>
+    <div class="container">
+        <div th:replace="~{navigation :: navigation(Profile)}"></div>
+        <h1>Профиль</h1>
+        <h5 th:text="'Name: ' + ${user.firstName} + ' ' + ${user.lastName}"></h5>
+        <h5 th:text="'Phone: ' + ${user.phone}"></h5>
+        <div>
+
+
+
+        </div>
+    </div>
 
 </body>
 </html>
